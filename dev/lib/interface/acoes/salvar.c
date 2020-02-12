@@ -19,6 +19,7 @@ int criar_tarefa()
 		GtkWidget *mensagem;
 		GtkWidget *caixa;
 		popup = gtk_window_new(GTK_WINDOW_POPUP);
+		gtk_window_set_position(GTK_WINDOW(popup),3);
 		mensagem  = gtk_label_new("Insira o nome da Tarefa");
 		caixa = gtk_box_new(1,0);	
 		nome_entry = gtk_entry_new();
@@ -57,7 +58,7 @@ int criar_tarefa()
 			if(nova_acao[pos].tipo==5)
 			{
 				fprintf(arquivo,"esperar\n");
-				fprintf(arquivo,"%i",nova_acao[pos].esperar.segundos);
+				fprintf(arquivo,"%i\n",nova_acao[pos].esperar.segundos);
 			
 			}
 		}

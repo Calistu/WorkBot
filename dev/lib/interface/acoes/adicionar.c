@@ -16,7 +16,9 @@ GtkWidget *escrever,       *escrever_entry,     *escrever_label;
 GtkWidget *clicar_label;
 GtkWidget *tecla,          *tecla_entry,        *tecla_label;
 GtkWidget *aguardar,       *aguardar_label, *aguardar_entry;
-gchar     *segundos,       *tecla_char;
+gchar     *segundos_char,  *tecla_char;
+GtkWidget *caixa_tecla;
+int       segundos_int;
 
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
@@ -121,15 +123,21 @@ int ok_acao(GtkWidget *widget,gpointer *opcao)
         if(gtk_toggle_button_get_active (opcao[4]))
         {
                 g_print("Acoes: selecionado: aguardar\n");
-		segundos = (gchar*)gtk_entry_get_text(GTK_ENTRY(aguardar_entry));
+		segundos_char = (gchar*)gtk_entry_get_text(GTK_ENTRY(aguardar_entry));
 		if(strlen(texto)>30)
 		{
 			g_print("Erro: tecla\n");	
  			gtk_entry_set_text(GTK_ENTRY(tecla_entry),"Insira até 50 caracteres");
 			return 1;
 		}
-		sprintf(id_acao,"Aguardar  %s segundos",segundos);
-        	nova_acao[qnt_acoes].tipo = 5;
+		if(strlen(segundos_char)<1)
+		{
+			return 0;
+		}
+		segundos_int  = atoi(segundos_char); 
+		sprintf(id_acao,"Aguardar  %i segundos",segundos_int);
+        	nova_acao[qnt_acoes].tipo             = 5;
+        	nova_acao[qnt_acoes].esperar.segundos = segundos_int;
         }
 	
 	nova_acao[qnt_acoes].pos_act = qnt_acoes;
@@ -186,7 +194,7 @@ int mudanca(GtkWidget*widget,gpointer *opcao)
 	{
 		g_print("Acoes: Radio posicao: pressiona tecla\n");
 		gtk_widget_show_all(tecla);
-		gtk_widget_grab_focus(tecla_label);
+		gtk_widget_grab_focus(caixa_tecla);
 	}
 	if(gtk_toggle_button_get_active (opcao[4]))
 	{
@@ -203,6 +211,8 @@ int adicionar_acao()
 	void pegar_posicao();
 	GtkWidget    **opcoes;
 	GtkWidget **separadores;
+	
+
 	posicoes_acoes = malloc(30);
 	texto_pos = malloc(20);
 	gtk_widget_set_sensitive(janela,FALSE);
@@ -233,7 +243,11 @@ int adicionar_acao()
 	opcoes[2] = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(opcoes[1]),"Clicar");
 	opcoes[3] = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(opcoes[2]),"Pressionar uma Tecla(Sem funcionar)");
 	opcoes[4] = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(opcoes[3]),"Aguardar");
-
+	
+	//criar menu
+	caixa_tecla = gtk_combo_box_text_new();
+	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(caixa_tecla),"1","Enter");
+	
 	escrever = gtk_box_new(0,0);
 	escrever_label = gtk_label_new("Insira o Texto");
 	escrever_entry = gtk_entry_new();
@@ -261,9 +275,8 @@ int adicionar_acao()
 
 	tecla = gtk_box_new(0,0);
 	tecla_label = gtk_label_new("Insira a tecla");
-	tecla_entry = gtk_entry_new();
         gtk_box_pack_start(GTK_BOX(tecla),tecla_label,0,0,10);
-        gtk_box_pack_start(GTK_BOX(tecla),tecla_entry,0,0,10);
+        gtk_box_pack_start(GTK_BOX(tecla),caixa_tecla,0,0,10);
 
 	caixa1 = gtk_box_new(1,0);
 	caixa2 = gtk_box_new(0,0);
