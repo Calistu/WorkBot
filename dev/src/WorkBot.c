@@ -28,7 +28,6 @@ int main(void)
 
 int leitura_execucao(GtkWidget *widget,gpointer ponteiro)
 {
-	FreeConsole();
 	gtk_widget_hide(janela);
 	parametros = fopen((char*)ponteiro,"r");
 	if(parametros==NULL)

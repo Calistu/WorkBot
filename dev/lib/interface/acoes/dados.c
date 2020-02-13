@@ -13,12 +13,12 @@ typedef struct
 		int y;
 	}mover;
 
-	union
+	struct
 	{
 		int valor;
 	}tecla;
 	
-	union
+	struct
 	{
 		int segundos;
 	}esperar;	

@@ -1,4 +1,4 @@
-#define IMG_OK     "/workbot/data/interface/imgs/ok.png"
+﻿#define IMG_OK     "/workbot/data/interface/imgs/ok.png"
 #define IMG_CANCEL "/workbot/data/interface/imgs/cancelar.png"
 #ifdef WIN32
 
@@ -26,6 +26,7 @@ int sinc_rem(int *pos)
 {
 	g_print("%i\n",pos);
 }
+
 int remover_acao(GtkWidget *widget,gpointer *ponteiro)
 {
 	g_print("Retirado\n",ponteiro);	
@@ -236,7 +237,7 @@ int adicionar_acao()
         gtk_container_set_border_width(GTK_CONTAINER(janela_acoes),3);
         gtk_widget_set_size_request(janela_acoes,400,200);
 
-	opcoes = malloc(sizeof(GtkRadioButton*)*4);
+	opcoes = malloc(sizeof(GtkRadioButton*)*5);
 
 	opcoes[0] = gtk_radio_button_new_with_label(lista_opcoes,"Mover mouse");
 	opcoes[1] = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(opcoes[0]),"Escrever");
