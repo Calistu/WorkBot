@@ -22,11 +22,6 @@ int       segundos_int;
 
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
-int sinc_rem(int *pos)
-{
-	g_print("%i\n",pos);
-}
-
 int remover_acao(GtkWidget *widget,gpointer *ponteiro)
 {
 	g_print("Retirado\n",ponteiro);	
@@ -35,14 +30,12 @@ int remover_acao(GtkWidget *widget,gpointer *ponteiro)
 	if(qnt_remove==qnt_acoes)
 	{
  	       gtk_widget_set_sensitive(finaliza,FALSE);	
-		
 	}
 }
 
 int fechar(GtkWidget* widget,gpointer* ponteiro)
 {
 	gtk_widget_set_sensitive(janela,TRUE);
-	
 	gtk_widget_destroy(GTK_WIDGET(ponteiro));
 	return 0;
 }
@@ -114,37 +107,38 @@ int ok_acao(GtkWidget *widget,gpointer *opcao)
         else
         if(gtk_toggle_button_get_active (opcao[3]))
         {
-                g_print("Acoes: selecionado: pressiona tecla\n");
-		tecla_char = malloc(30);
-		nova_acao[qnt_acoes].tipo = 4;
-//		nova_acao[qnt_acoes].tipo.tecla.valor =
-		tecla_char = 	(gchar*)gtk_entry_get_text(GTK_ENTRY(tecla_entry));
-		sprintf(id_acao,"Pressionar tecla %s",texto);
+            g_print("Acoes: selecionado: pressiona tecla\n");
+			tecla_char = malloc(30);
+			nova_acao[qnt_acoes].tipo = 4;
+//			nova_acao[qnt_acoes].tipo.tecla.valor =
+			tecla_char = 	(gchar*)gtk_entry_get_text(GTK_ENTRY(tecla_entry));
+			sprintf(id_acao,"Pressionar tecla %s",texto);
         }
         if(gtk_toggle_button_get_active (opcao[4]))
         {
-                g_print("Acoes: selecionado: aguardar\n");
-		segundos_char = (gchar*)gtk_entry_get_text(GTK_ENTRY(aguardar_entry));
-		if(strlen(texto)>30)
-		{
-			g_print("Erro: tecla\n");	
- 			gtk_entry_set_text(GTK_ENTRY(tecla_entry),"Insira até 50 caracteres");
-			return 1;
-		}
-		if(strlen(segundos_char)<1)
-		{
-			return 0;
-		}
-		segundos_int  = atoi(segundos_char); 
-		sprintf(id_acao,"Aguardar  %i segundos",segundos_int);
-        	nova_acao[qnt_acoes].tipo             = 5;
+            g_print("Acoes: selecionado: aguardar\n");
+			segundos_char = malloc(8);
+			segundos_char = (gchar*)gtk_entry_get_text(GTK_ENTRY(aguardar_entry));
+			if(strlen(segundos_char)>8)
+			{
+				g_print("Erro: tecla\n");	
+				gtk_entry_set_text(GTK_ENTRY(tecla_entry),"Insira até 1000000 segundos");
+				return 1;
+			}
+			if(strlen(segundos_char)<1)
+			{
+				return 0;
+			}
+			segundos_int  = atoi(segundos_char); 
+			sprintf(id_acao,"Aguardar  %i segundos",segundos_int);
+			nova_acao[qnt_acoes].tipo             = 5;
         	nova_acao[qnt_acoes].esperar.segundos = segundos_int;
         }
 	
 	nova_acao[qnt_acoes].pos_act = qnt_acoes;
 	acao[qnt_acoes]              = gtk_label_new(id_acao);
 	remover[qnt_acoes]           = gtk_button_new_with_label("Retirar");	
-        img_remover[qnt_acoes]       = gtk_image_new_from_file(IMG_REM);
+    img_remover[qnt_acoes]       = gtk_image_new_from_file(IMG_REM);
 	acao_container[qnt_acoes]    = gtk_box_new(1,0);
 	
 	gtk_button_set_image(GTK_BUTTON(remover[qnt_acoes]),img_remover[qnt_acoes]);
@@ -215,7 +209,7 @@ int adicionar_acao()
 	
 
 	posicoes_acoes = malloc(30);
-	texto_pos = malloc(20);
+	texto_pos = malloc(30);
 	gtk_widget_set_sensitive(janela,FALSE);
 		
 	separadores    = malloc(sizeof(GtkSeparator*)*5);
@@ -232,10 +226,10 @@ int adicionar_acao()
 	GtkWidget *botao_ok,*botao_cancelar;
 	GtkWidget *img_ok,*img_cancelar;
 	janela_acoes = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-        gtk_window_set_decorated(GTK_WINDOW(janela_acoes),FALSE);
+    gtk_window_set_decorated(GTK_WINDOW(janela_acoes),FALSE);
 	gtk_window_set_position(GTK_WINDOW(janela_acoes),3);
-        gtk_container_set_border_width(GTK_CONTAINER(janela_acoes),3);
-        gtk_widget_set_size_request(janela_acoes,400,200);
+    gtk_container_set_border_width(GTK_CONTAINER(janela_acoes),3);
+    gtk_widget_set_size_request(janela_acoes,400,200);
 
 	opcoes = malloc(sizeof(GtkRadioButton*)*5);
 

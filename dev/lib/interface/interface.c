@@ -45,6 +45,7 @@ GtkWidget *espaco_rolamento_lista;
 #include "acoes/adicionar.c"
 #include "acoes/salvar.c"
 #include "acoes/executar.c"
+#include "acoes/cancelar.c"
 #include "acoes/listar.c"
 
 int main()
@@ -220,6 +221,7 @@ int exec_interface()
 	g_signal_connect(janela,"destroy",G_CALLBACK(gtk_main_quit),NULL);
 	g_signal_connect(botao_fecha,"clicked",G_CALLBACK(gtk_main_quit),NULL);
 	g_signal_connect(botao_mais_acoes,"clicked",G_CALLBACK(adicionar_acao),NULL);
+	g_signal_connect(cancelar_acoes,"clicked",G_CALLBACK(exec_cancelar),NULL);
 	g_signal_connect(salvar_acoes,"clicked",G_CALLBACK(exec_salvar),NULL);
 	gtk_widget_show_all(janela);
 	gtk_main();
