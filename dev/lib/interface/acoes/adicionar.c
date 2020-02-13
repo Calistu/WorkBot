@@ -225,10 +225,12 @@ int adicionar_acao()
 	GtkWidget *caixa1,*caixa2,*caixa_principal;
 	GtkWidget *botao_ok,*botao_cancelar;
 	GtkWidget *img_ok,*img_cancelar;
+	
 	janela_acoes = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_decorated(GTK_WINDOW(janela_acoes),FALSE);
+    	gtk_window_set_decorated(GTK_WINDOW(janela_acoes),FALSE);
 	gtk_window_set_position(GTK_WINDOW(janela_acoes),3);
-    gtk_container_set_border_width(GTK_CONTAINER(janela_acoes),3);
+	gtk_widget_set_name(janela_acoes,"janela_acoes");    
+gtk_container_set_border_width(GTK_CONTAINER(janela_acoes),3);
     gtk_widget_set_size_request(janela_acoes,400,200);
 
 	opcoes = malloc(sizeof(GtkRadioButton*)*5);
