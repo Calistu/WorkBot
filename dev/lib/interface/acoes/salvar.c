@@ -60,27 +60,17 @@ int criar_tarefa()
 						fprintf(arquivo,"enter\n");
 						break;
 					case 2:
-						fprintf(arquivo,"tecla_cima");
+						fprintf(arquivo,"tecla_cima\n");
 						break;
 					case 3:
-						fprintf(arquivo,"tecla_baixo");
+						fprintf(arquivo,"tecla_baixo\n");
 						break;					
 					case 4:
-						fprintf(arquivo,"tecla_direita");
+						fprintf(arquivo,"tecla_direita\n");
 						break;
 					case 5:
-						fprintf(arquivo,"tecla_esquerda");
+						fprintf(arquivo,"tecla_esquerda\n");
 						break;
-					case 6:
-						fprintf(arquivo,"");
-						break;
-					case 7:
-						fprintf(arquivo,"");
-						break;
-					case 8:
-						fprintf(arquivo,"");
-						break;
-					
 				}
 			}
 			if(nova_acao[pos].tipo==5)
