@@ -6,4 +6,6 @@ char *xchar,*ychar;
 int  tempo;
 int  xint,yint;
 int  linhas=0;
+void qnt_loop();
+
 

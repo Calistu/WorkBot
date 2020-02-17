@@ -21,11 +21,12 @@ typedef struct
 	struct
 	{
 		int segundos;
-	}esperar;	
+	}esperar;
+	
 	char *escrever;
 }acoes;
 
-typedef struct
+struct params
 {
 	int velocidade;
 	int init_segs;
@@ -42,5 +43,6 @@ typedef struct
 		int qnt;
 	}loop;
 
-}params;
+};
+struct params parameters;
 

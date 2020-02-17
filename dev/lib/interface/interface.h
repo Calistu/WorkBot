@@ -12,13 +12,13 @@ GtkWidget *janela;
 
 char *caminho_arq;
 
-GtkWidget *caixa_acoes,  *caixa_parametros,*caixa_lista;
-GtkWidget *loop,                    *checkbox_loop;
+GtkWidget *caixa_acoes,             *caixa_parametros,            *caixa_lista;
+GtkWidget *loop,                    *checkbox_loop,               *checkbox_loop_qnt_label,        *checkbox_loop_qnt;
 GtkWidget *velocidade,              *velocidade_entry,            *velocidade_label;
 GtkWidget *iniciar_apos,            *iniciar_apos_label,          *iniciar_apos_spin;
 GtkWidget *marcar_inicio,           *marcar_inicio_checkbox,      *marcar_horario,
-	  *marcar_inicio_hora,      *marcar_inicio_minutos,       *marcar_inicio_segundos,
-	  *marcar_inicio_hora_label,*marcar_inicio_minutos_label, *marcar_inicio_segundos_label;
+	      *marcar_inicio_hora,      *marcar_inicio_minutos,       *marcar_inicio_segundos,
+	      *marcar_inicio_hora_label,*marcar_inicio_minutos_label, *marcar_inicio_segundos_label;
 GtkWidget *botao_fecha;
 GtkWidget *botao_mais_acoes;
 GtkWidget *img_iniciar,             *img_fecha,       *img_mais;
@@ -47,6 +47,32 @@ GtkWidget *espaco_rolamento_lista;
 #include "acoes/executar.c"
 #include "acoes/listar.c"
 
+
+
+
+void loop_hide()
+{
+	if(gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(checkbox_loop)))
+	{
+		g_print("Acoes: selecionado posicao: loop\n");
+		gtk_widget_show_all(loop);
+		gtk_widget_grab_focus(checkbox_loop_qnt);
+		parameters.loop.flag=1;
+	}
+	else
+	{
+		g_print("Acoes: removido posicao: loop\n");
+		gtk_widget_hide(checkbox_loop_qnt_label);
+		gtk_widget_hide(checkbox_loop_qnt);
+		parameters.loop.flag=0;
+		parameters.loop.qnt=0;
+	}
+	return;
+}
+void qnt_loop()
+{
+	parameters.loop.qnt = (int) gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(checkbox_loop_qnt));
+}
 int exec_interface()
 {
 	gtk_init(NULL,NULL);
@@ -73,13 +99,19 @@ int exec_interface()
 	scroll_caixa = gtk_box_new(0,0);
 	scroll_acoes = gtk_scrolled_window_new(NULL,NULL);
 	
-	loop             = gtk_box_new(1,0);  
-	checkbox_loop    = gtk_check_button_new_with_label("Fazer Loop?");
+	loop                       = gtk_box_new(1,0);  
+	checkbox_loop              = gtk_check_button_new_with_label("Fazer Loop?");
+	checkbox_loop_qnt_label    = gtk_label_new("Quantas repetições?");
+	checkbox_loop_qnt          = gtk_spin_button_new_with_range(0,(int)sizeof(long long),1);
 	gtk_box_pack_start(GTK_BOX(loop),checkbox_loop,0,0,0);
+	gtk_box_pack_start(GTK_BOX(loop),checkbox_loop_qnt_label,0,0,0);
+	gtk_box_pack_start(GTK_BOX(loop),checkbox_loop_qnt,0,0,0);
+	g_signal_connect(GTK_TOGGLE_BUTTON(checkbox_loop),"toggled",G_CALLBACK(loop_hide),NULL);
+
 
 	velocidade_label = gtk_label_new("Qual velocidade da execucao?");
 	velocidade_entry = gtk_spin_button_new_with_range(1,5,1);
-       	velocidade       = gtk_box_new(1,0);
+    velocidade       = gtk_box_new(1,0);
 	gtk_box_pack_start(GTK_BOX(velocidade),velocidade_label,0,0,0);
 	gtk_box_pack_start(GTK_BOX(velocidade),velocidade_entry,0,0,0);
 	
@@ -89,11 +121,11 @@ int exec_interface()
 	gtk_box_pack_start(GTK_BOX(iniciar_apos),iniciar_apos_label,0,0,0);
 	gtk_box_pack_start(GTK_BOX(iniciar_apos),iniciar_apos_spin,0,0,0);
 
-	marcar_inicio          = gtk_box_new(1,0); 
-	marcar_horario         = gtk_box_new(1,0);
-	marcar_inicio_hora     = gtk_spin_button_new_with_range(0,23,1);
-	marcar_inicio_minutos  = gtk_spin_button_new_with_range(0,59,1);
-	marcar_inicio_segundos = gtk_spin_button_new_with_range(0,59,1);
+	marcar_inicio                = gtk_box_new(1,0); 
+	marcar_horario               = gtk_box_new(1,0);
+	marcar_inicio_hora           = gtk_spin_button_new_with_range(0,23,1);
+	marcar_inicio_minutos        = gtk_spin_button_new_with_range(0,59,1);
+	marcar_inicio_segundos       = gtk_spin_button_new_with_range(0,59,1);
 	marcar_inicio_hora_label     = gtk_label_new("Horas:");
 	marcar_inicio_minutos_label  = gtk_label_new("Minutos:");
 	marcar_inicio_segundos_label = gtk_label_new("Segundos:");
@@ -122,7 +154,7 @@ int exec_interface()
 	gtk_container_set_border_width(GTK_CONTAINER(janela),10);
 	gtk_window_set_decorated(GTK_WINDOW(janela),TRUE);
 
-	gtk_widget_set_size_request(janela,1280,640);
+	gtk_widget_set_size_request(janela,1280,620);
 
 	frame_acoes      = gtk_frame_new("Ações");
 	frame_parametros = gtk_frame_new("Parametros");
@@ -172,14 +204,14 @@ int exec_interface()
 
 	gtk_box_pack_start(GTK_BOX(caixa_principal),caixas,0,0,0);
 	gtk_box_pack_start(GTK_BOX(caixa_principal),separador_barra,0,0,0);
-	gtk_box_pack_start(GTK_BOX(caixa_principal),barra,0,0,0);
-	gtk_box_pack_end(GTK_BOX(barra),botao_fecha,0,0,20);
+	gtk_box_pack_start(GTK_BOX(caixa_principal),barra,0,0,5);
+	gtk_box_pack_end(GTK_BOX(barra),botao_fecha,0,0,0);
 	
 	gtk_widget_set_size_request(frame_acoes,1200,200);
 	gtk_widget_set_size_request(frame_parametros,1200,200);
 	gtk_widget_set_size_request(frame_lista,1200,200);	
 	
-	gtk_widget_set_size_request(barra,80,640);
+	gtk_widget_set_size_request(barra,80,620);
 
 	gtk_container_add(GTK_CONTAINER(frame_acoes),caixa_acoes);
 	gtk_box_pack_start(GTK_BOX(caixa_acoes),botao_mais_acoes,0,0,10);
@@ -219,6 +251,8 @@ int exec_interface()
 	g_signal_connect(salvar_acoes,"clicked",G_CALLBACK(exec_salvar),NULL);
 	g_signal_connect(cancelar_acoes,"clicked",G_CALLBACK(exec_cancelar),NULL);
 	gtk_widget_show_all(janela);
+	gtk_widget_hide(checkbox_loop_qnt_label);
+	gtk_widget_hide(checkbox_loop_qnt);
 	gtk_main();
 }
 

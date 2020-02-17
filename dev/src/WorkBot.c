@@ -160,6 +160,21 @@ int leitura_execucao(GtkWidget *widget,gpointer ponteiro)
 			printf("Tecla para esquerda recebido\n");
 			escrever_letra(0x25);
 		}
+		if(strcmp(nome_acao,"win")==0)
+		{
+			printf("Tecla win recebido\n");
+			escrever_letra(0x5b);
+		}
+		if(strcmp(nome_acao,"ctrl")==0)
+		{
+			printf("Tecla ctrl recebido\n");
+			escrever_letra(0xa2);
+		}
+				if(strcmp(nome_acao,"shift")==0)
+		{
+			printf("Tecla shift recebido\n");
+			escrever_letra(0xa0);
+		}
 	}
 	gtk_widget_show_all(janela);
 	fclose(parametros);	

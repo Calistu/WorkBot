@@ -31,62 +31,76 @@ int criar_tarefa()
 	}
 	FILE *arquivo;
     arquivo = fopen(caminho,"w");
-	int pos = 0;
-        while(pos<qnt_acoes)
-        {
-                if(gtk_widget_get_visible(acao_container[pos])!=FALSE)
- 		{
-			g_print("Adicionando campo %i\n",pos);
-			if(nova_acao[pos].tipo==1)
+	int pos = 0,loop=0;
+	qnt_loop();
+	for(loop=0;loop<=parameters.loop.qnt;loop++)
+	{
+		while(pos<qnt_acoes)
+		{
+			if(gtk_widget_get_visible(acao_container[pos])!=FALSE)
 			{
-				fprintf(arquivo,"mover\n");
-				fprintf(arquivo,"%i\n",nova_acao[pos].mover.x);
-				fprintf(arquivo,"%i\n",nova_acao[pos].mover.y);
-			}
-			if(nova_acao[pos].tipo==2)
-			{
-				fprintf(arquivo,"escrever\n");
-				fprintf(arquivo,"%s\n",nova_acao[pos].escrever);
-			}
-			if(nova_acao[pos].tipo==3)
-			{
-				fprintf(arquivo,"clicar\n");
-			}
-			if(nova_acao[pos].tipo==4);
-			{
-				switch(nova_acao[pos].tecla.valor)
+				g_print("Adicionando campo %i\n",pos);
+				if(nova_acao[pos].tipo==1)
 				{
-					case 1:
-						fprintf(arquivo,"enter\n");
-						break;
-					case 2:
-						fprintf(arquivo,"tecla_cima\n");
-						break;
-					case 3:
-						fprintf(arquivo,"tecla_baixo\n");
-						break;					
-					case 4:
-						fprintf(arquivo,"tecla_direita\n");
-						break;
-					case 5:
-						fprintf(arquivo,"tecla_esquerda\n");
-						break;
+					fprintf(arquivo,"mover\n");
+					fprintf(arquivo,"%i\n",nova_acao[pos].mover.x);
+					fprintf(arquivo,"%i\n",nova_acao[pos].mover.y);
+				}
+				if(nova_acao[pos].tipo==2)
+				{
+					fprintf(arquivo,"escrever\n");
+					fprintf(arquivo,"%s\n",nova_acao[pos].escrever);
+				}
+				if(nova_acao[pos].tipo==3)
+				{
+					fprintf(arquivo,"clicar\n");
+				}
+				if(nova_acao[pos].tipo == 4);
+				{
+					switch(nova_acao[pos].tecla.valor)
+					{
+						case 1:
+							fprintf(arquivo,"enter\n");
+							break;
+						case 2:
+							fprintf(arquivo,"tecla_cima\n");
+							break;
+						case 3:
+							fprintf(arquivo,"tecla_baixo\n");
+							break;					
+						case 4:
+							fprintf(arquivo,"tecla_direita\n");
+							break;
+						case 5:
+							fprintf(arquivo,"tecla_esquerda\n");
+							break;
+						case 6:
+							fprintf(arquivo,"win\n");
+							break;
+						case 7:
+							fprintf(arquivo,"ctrl\n");
+							break;
+						case 8:
+							fprintf(arquivo,"shift\n");
+							break;
+						
+						
+					}
+				}
+				if(nova_acao[pos].tipo==5)
+				{
+					fprintf(arquivo,"esperar\n");
+					fprintf(arquivo,"%i\n",nova_acao[pos].esperar.segundos);
+				
 				}
 			}
-			if(nova_acao[pos].tipo==5)
+			else
 			{
-				fprintf(arquivo,"esperar\n");
-				fprintf(arquivo,"%i\n",nova_acao[pos].esperar.segundos);
-			
+				g_print("o campo %i havia sido deletado\n",pos);
 			}
+			pos++;
 		}
-		else
-		{
-			g_print("o campo %i havia sido deletado\n",pos);
-		}
-		pos++;
-
-        }
+	}
 	exec_cancelar();
 	fclose(arquivo);
 }
