@@ -2,7 +2,6 @@
 #define IMG_CANCEL "/workbot/data/interface/imgs/cancelar.png"
 #ifdef WIN32
 
-
 #endif
 int *posicoes_acoes;
 int x,y;
@@ -15,10 +14,11 @@ GtkWidget *move_label;
 GtkWidget *escrever,       *escrever_entry,     *escrever_label;
 GtkWidget *clicar_label;
 GtkWidget *tecla,          *tecla_entry,        *tecla_label;
-GtkWidget *aguardar,       *aguardar_label, *aguardar_entry;
-gchar     *segundos_char,  *tecla_char;
+GtkWidget *aguardar,       *aguardar_label,     *aguardar_entry;
+gchar     *tecla_char;
+gint      tecla_opcao=0;
 GtkWidget *caixa_tecla;
-int       segundos_int;
+gint       segundos_int;
 
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
@@ -110,26 +110,35 @@ int ok_acao(GtkWidget *widget,gpointer *opcao)
             g_print("Acoes: selecionado: pressiona tecla\n");
 			tecla_char = malloc(30);
 			nova_acao[qnt_acoes].tipo = 4;
-//			nova_acao[qnt_acoes].tipo.tecla.valor =
-			tecla_char = 	(gchar*)gtk_entry_get_text(GTK_ENTRY(tecla_entry));
-			sprintf(id_acao,"Pressionar tecla %s",texto);
+			tecla_opcao = gtk_combo_box_get_active(GTK_COMBO_BOX(caixa_tecla));
+			switch(tecla_opcao)
+			{
+				case 1:
+					sprintf(id_acao,"Pressionar tecla 'enter'");
+					nova_acao[qnt_acoes].tecla.valor = 1;
+					break;
+				case 2:
+					sprintf(id_acao,"Pressionar tecla direcional 'cima'");
+					nova_acao[qnt_acoes].tecla.valor = 2;
+					break;
+				case 3:
+					sprintf(id_acao,"Pressionar tecla direcional 'baixo'");
+					nova_acao[qnt_acoes].tecla.valor = 3;
+					break;
+				case 4:
+					sprintf(id_acao,"Pressionar tecla direcional 'direita'");
+					nova_acao[qnt_acoes].tecla.valor = 4;
+					break;
+				case 5:
+					sprintf(id_acao,"Pressionar botão direcional 'esquerda'");
+					nova_acao[qnt_acoes].tecla.valor = 5;
+					break;
+			}
         }
         if(gtk_toggle_button_get_active (opcao[4]))
         {
             g_print("Acoes: selecionado: aguardar\n");
-			segundos_char = malloc(8);
-			segundos_char = (gchar*)gtk_entry_get_text(GTK_ENTRY(aguardar_entry));
-			if(strlen(segundos_char)>8)
-			{
-				g_print("Erro: tecla\n");	
-				gtk_entry_set_text(GTK_ENTRY(tecla_entry),"Insira até 1000000 segundos");
-				return 1;
-			}
-			if(strlen(segundos_char)<1)
-			{
-				return 0;
-			}
-			segundos_int  = atoi(segundos_char); 
+			segundos_int = (gint)gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(aguardar_entry));
 			sprintf(id_acao,"Aguardar  %i segundos",segundos_int);
 			nova_acao[qnt_acoes].tipo             = 5;
         	nova_acao[qnt_acoes].esperar.segundos = segundos_int;
@@ -227,10 +236,10 @@ int adicionar_acao()
 	GtkWidget *img_ok,*img_cancelar;
 	
 	janela_acoes = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    	gtk_window_set_decorated(GTK_WINDOW(janela_acoes),FALSE);
+    gtk_window_set_decorated(GTK_WINDOW(janela_acoes),FALSE);
 	gtk_window_set_position(GTK_WINDOW(janela_acoes),3);
 	gtk_widget_set_name(janela_acoes,"janela_acoes");    
-gtk_container_set_border_width(GTK_CONTAINER(janela_acoes),3);
+	gtk_container_set_border_width(GTK_CONTAINER(janela_acoes),3);
     gtk_widget_set_size_request(janela_acoes,400,200);
 
 	opcoes = malloc(sizeof(GtkRadioButton*)*5);
@@ -238,18 +247,24 @@ gtk_container_set_border_width(GTK_CONTAINER(janela_acoes),3);
 	opcoes[0] = gtk_radio_button_new_with_label(lista_opcoes,"Mover mouse");
 	opcoes[1] = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(opcoes[0]),"Escrever");
 	opcoes[2] = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(opcoes[1]),"Clicar");
-	opcoes[3] = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(opcoes[2]),"Pressionar uma Tecla(Sem funcionar)");
+	opcoes[3] = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(opcoes[2]),"Pressionar uma Tecla");
 	opcoes[4] = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(opcoes[3]),"Aguardar");
 	
 	//criar menu
 	caixa_tecla = gtk_combo_box_text_new();
+	gtk_combo_box_text_insert_text(GTK_COMBO_BOX_TEXT(caixa_tecla),0,"Escolha a tecla");
+	gtk_combo_box_set_active (GTK_COMBO_BOX (caixa_tecla), 0);
 	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(caixa_tecla),"1","Enter");
+	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(caixa_tecla),"2","Direcional: cima");
+	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(caixa_tecla),"3","Direcional: baixo");
+	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(caixa_tecla),"4","Direcional: direita");
+	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(caixa_tecla),"5","Direcional: esquerda");
 	
 	escrever = gtk_box_new(0,0);
 	escrever_label = gtk_label_new("Insira o Texto");
 	escrever_entry = gtk_entry_new();
-        gtk_box_pack_start(GTK_BOX(escrever),escrever_label,0,0,10);
-        gtk_box_pack_start(GTK_BOX(escrever),escrever_entry,0,0,10);
+    gtk_box_pack_start(GTK_BOX(escrever),escrever_label,0,0,10);
+    gtk_box_pack_start(GTK_BOX(escrever),escrever_entry,0,0,10);
 	
 	clicar_label = gtk_label_new("Fará um clique na posicao do mouse");
 	
@@ -262,10 +277,10 @@ gtk_container_set_border_width(GTK_CONTAINER(janela_acoes),3);
         
 	aguardar       = gtk_box_new(0,0);
 	aguardar_label = gtk_label_new("Quanto tempo deseja aguardar?");
-       	aguardar_entry = gtk_entry_new();	
+    aguardar_entry = gtk_spin_button_new_with_range(1,1000,1);	
         
 	gtk_box_pack_start(GTK_BOX(aguardar),aguardar_label,0,0,10);
-        gtk_box_pack_start(GTK_BOX(aguardar),aguardar_entry,0,0,10);
+    gtk_box_pack_start(GTK_BOX(aguardar),aguardar_entry,0,0,10);
 
 	gtk_box_pack_start(GTK_BOX(posicao),posicao_mouse_button,0,0,10);
         gtk_box_pack_start(GTK_BOX(posicao),move_label,0,0,10);

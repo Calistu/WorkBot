@@ -42,14 +42,15 @@ GtkWidget *tarefas_listadas;
 GtkWidget *espaco_rolamento_lista;
 
 #include "acoes/adicionar.c"
+#include "acoes/cancelar.c"
 #include "acoes/salvar.c"
 #include "acoes/executar.c"
-#include "acoes/cancelar.c"
 #include "acoes/listar.c"
 
 int exec_interface()
 {
 	gtk_init(NULL,NULL);
+	FreeConsole();
 	abrir_css(PRINC_CSS);
 	GtkWidget *barra;
 	GtkWidget *caixa_principal,*caixas;

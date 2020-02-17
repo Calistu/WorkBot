@@ -1,4 +1,4 @@
-#include <gtk/gtk.h>
+﻿#include <gtk/gtk.h>
 GtkWidget *janela;
 #include "etc/css.c"
 
@@ -57,6 +57,7 @@ int main()
 int exec_interface()
 {
 	gtk_init(NULL,NULL);
+	FreeConsole();
 	abrir_css(PRINC_CSS);
 	GtkWidget *barra;
 	GtkWidget *caixa_principal,*caixas;
