@@ -100,6 +100,7 @@ int criar_tarefa()
 			}
 			pos++;
 		}
+		pos=0;
 	}
 	exec_cancelar();
 	fclose(arquivo);

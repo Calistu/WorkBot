@@ -14,11 +14,12 @@ INPUT teclado;
 INPUT mouse;
 int main(void)
 { 
+	printf("carregando...\n");
 	FreeConsole();
 	setlocale(LC_ALL,"Portuguese");
 	nome_acao  = malloc(20);
-	xchar = malloc(10);
-	ychar = malloc(10);
+	xchar = malloc(5);
+	ychar = malloc(5);
 	texto = malloc(30);
 	tempo_char = malloc(10);
 	exec_interface();

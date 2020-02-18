@@ -1,6 +1,6 @@
 GtkWidget *janela;
 #include "etc/css.c"
-
+#define ACT_MAX 30
 #define IMG_INIT   "/workbot/data/interface/imgs/iniciar.png"
 #define IMG_PAUSE  "/workbot/data/interface/imgs/pause.png"
 #define IMG_FECHA  "/workbot/data/interface/imgs/fecha.png"
@@ -24,7 +24,7 @@ GtkWidget *botao_mais_acoes;
 GtkWidget *img_iniciar,             *img_fecha,       *img_mais;
 GtkWidget *frame_acoes,             *frame_parametros,*frame_lista;
 #include "acoes/dados.c"
-acoes     nova_acao[30];
+acoes     nova_acao[ACT_MAX];
 
 GtkWidget **acao;
 GtkWidget **remover;
@@ -76,6 +76,7 @@ void qnt_loop()
 int exec_interface()
 {
 	gtk_init(NULL,NULL);
+	g_print("carregando...\n");
 	FreeConsole();
 	abrir_css(PRINC_CSS);
 	GtkWidget *barra;
@@ -83,10 +84,10 @@ int exec_interface()
 	GtkWidget *separador1,*separador2,*separador3,*separador_barra;
 	GtkWidget *separador_param1,*separador_param2,*separador_param3;
 	
-	acao           = malloc(sizeof(GtkLabel*)*30);       
-	remover        = malloc(sizeof(GtkButton*)*30);       
-	img_remover    = malloc(sizeof(GtkImage*)*30);       
-	acao_container = malloc(sizeof(GtkBox*)*30);       
+	acao           = malloc(sizeof(GtkLabel*)*ACT_MAX);       
+	remover        = malloc(sizeof(GtkButton*)*ACT_MAX);       
+	img_remover    = malloc(sizeof(GtkImage*)*ACT_MAX);       
+	acao_container = malloc(sizeof(GtkBox*)*ACT_MAX);       
 
 	finaliza           = gtk_box_new(1,0);
 	salvar_acoes       = gtk_button_new_with_label("Salvar");
@@ -102,7 +103,7 @@ int exec_interface()
 	loop                       = gtk_box_new(1,0);  
 	checkbox_loop              = gtk_check_button_new_with_label("Fazer Loop?");
 	checkbox_loop_qnt_label    = gtk_label_new("Quantas repetições?");
-	checkbox_loop_qnt          = gtk_spin_button_new_with_range(0,(int)sizeof(long long),1);
+	checkbox_loop_qnt          = gtk_spin_button_new_with_range(1,1000,1);
 	gtk_box_pack_start(GTK_BOX(loop),checkbox_loop,0,0,0);
 	gtk_box_pack_start(GTK_BOX(loop),checkbox_loop_qnt_label,0,0,0);
 	gtk_box_pack_start(GTK_BOX(loop),checkbox_loop_qnt,0,0,0);

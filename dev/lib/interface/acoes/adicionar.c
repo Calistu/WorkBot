@@ -144,7 +144,8 @@ int ok_acao(GtkWidget *widget,gpointer *opcao)
 				sprintf(id_acao,"Pressionar botão shift - 'SHIFT'");
 				nova_acao[qnt_acoes].tecla.valor = 8;
 				break;
-		
+			default: 
+				return 1;
 		}
 	}
 	if(gtk_toggle_button_get_active (opcao[4]))
@@ -300,52 +301,52 @@ int adicionar_acao()
     gtk_box_pack_start(GTK_BOX(aguardar),aguardar_entry,0,0,10);
 
 	gtk_box_pack_start(GTK_BOX(posicao),posicao_mouse_button,0,0,10);
-        gtk_box_pack_start(GTK_BOX(posicao),move_label,0,0,10);
+	gtk_box_pack_start(GTK_BOX(posicao),move_label,0,0,10);
 
 	tecla = gtk_box_new(0,0);
 	tecla_label = gtk_label_new("Insira a tecla");
-        gtk_box_pack_start(GTK_BOX(tecla),tecla_label,0,0,10);
-        gtk_box_pack_start(GTK_BOX(tecla),caixa_tecla,0,0,10);
+	gtk_box_pack_start(GTK_BOX(tecla),tecla_label,0,0,10);
+	gtk_box_pack_start(GTK_BOX(tecla),caixa_tecla,0,0,10);
 
 	caixa1 = gtk_box_new(1,0);
 	caixa2 = gtk_box_new(0,0);
 	caixa_principal = gtk_box_new(1,0);
 
 	img_ok = gtk_image_new_from_file(IMG_OK);
-        img_cancelar = gtk_image_new_from_file(IMG_CANCEL);
+	img_cancelar = gtk_image_new_from_file(IMG_CANCEL);
 	
 	botao_ok = gtk_button_new_with_label("Ok");
 	botao_cancelar = gtk_button_new_with_label("Cancelar");
 	gtk_button_set_image(GTK_BUTTON(botao_ok),img_ok);
 	gtk_button_set_image(GTK_BUTTON(botao_cancelar),img_cancelar);
 
-        gtk_box_pack_start(GTK_BOX(caixa1),opcoes[0],0,0,10);
-        gtk_box_pack_start(GTK_BOX(caixa1),posicao,0,0,0);
-        gtk_box_pack_start(GTK_BOX(caixa1),separadores[0],0,0,10);
+	gtk_box_pack_start(GTK_BOX(caixa1),opcoes[0],0,0,10);
+	gtk_box_pack_start(GTK_BOX(caixa1),posicao,0,0,0);
+	gtk_box_pack_start(GTK_BOX(caixa1),separadores[0],0,0,10);
 
-        gtk_box_pack_start(GTK_BOX(caixa1),opcoes[1],0,0,10);
-        gtk_box_pack_start(GTK_BOX(caixa1),escrever,0,0,0);
-        gtk_box_pack_start(GTK_BOX(caixa1),separadores[1],0,0,10);
-       
-       	gtk_box_pack_start(GTK_BOX(caixa1),opcoes[2],0,0,10);
-       	gtk_box_pack_start(GTK_BOX(caixa1),clicar_label,0,0,10);
-        gtk_box_pack_start(GTK_BOX(caixa1),separadores[2],0,0,10);
-       
-       	gtk_box_pack_start(GTK_BOX(caixa1),opcoes[3],0,0,10);
-        gtk_box_pack_start(GTK_BOX(caixa1),tecla,0,0,0);
-        gtk_box_pack_start(GTK_BOX(caixa1),separadores[3],0,0,10);
+	gtk_box_pack_start(GTK_BOX(caixa1),opcoes[1],0,0,10);
+	gtk_box_pack_start(GTK_BOX(caixa1),escrever,0,0,0);
+	gtk_box_pack_start(GTK_BOX(caixa1),separadores[1],0,0,10);
+   
+	gtk_box_pack_start(GTK_BOX(caixa1),opcoes[2],0,0,10);
+	gtk_box_pack_start(GTK_BOX(caixa1),clicar_label,0,0,10);
+	gtk_box_pack_start(GTK_BOX(caixa1),separadores[2],0,0,10);
+   
+	gtk_box_pack_start(GTK_BOX(caixa1),opcoes[3],0,0,10);
+	gtk_box_pack_start(GTK_BOX(caixa1),tecla,0,0,0);
+	gtk_box_pack_start(GTK_BOX(caixa1),separadores[3],0,0,10);
 
-       	gtk_box_pack_start(GTK_BOX(caixa1),opcoes[4],0,0,10);
-        gtk_box_pack_start(GTK_BOX(caixa1),aguardar,0,0,0);
-        gtk_box_pack_start(GTK_BOX(caixa1),separadores[4],0,0,10);
+	gtk_box_pack_start(GTK_BOX(caixa1),opcoes[4],0,0,10);
+	gtk_box_pack_start(GTK_BOX(caixa1),aguardar,0,0,0);
+	gtk_box_pack_start(GTK_BOX(caixa1),separadores[4],0,0,10);
         
 	gtk_box_pack_end(GTK_BOX(caixa2),botao_cancelar,0,0,5);
 	gtk_box_pack_end(GTK_BOX(caixa2),botao_ok,0,0,5);
 
-        gtk_box_pack_start(GTK_BOX(caixa_principal),caixa1,0,0,10);
-        gtk_widget_set_size_request(caixa1,400,150);
-        gtk_box_pack_end(GTK_BOX(caixa_principal),caixa2,0,0,0);
-        gtk_widget_set_size_request(caixa2,400,50);
+	gtk_box_pack_start(GTK_BOX(caixa_principal),caixa1,0,0,10);
+	gtk_widget_set_size_request(caixa1,400,150);
+	gtk_box_pack_end(GTK_BOX(caixa_principal),caixa2,0,0,0);
+	gtk_widget_set_size_request(caixa2,400,50);
 	
 	gtk_container_add(GTK_CONTAINER(janela_acoes),caixa_principal);
 	g_signal_connect(janela_acoes,"destroy",G_CALLBACK(fechar),janela_acoes);
